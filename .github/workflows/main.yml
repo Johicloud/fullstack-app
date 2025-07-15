@@ -9,30 +9,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Build & Test Backend
-      run: |
-        cd backend
-        npm install
-        npm test || echo "no tests"
+      - name: Build & Test Backend
+        run: |
+          cd backend
+          npm install
+          npm test || echo "no tests"
 
-    - name: Build & Test Frontend
-      run: |
-        cd frontend
-        npm install
-        npm test || echo "no tests"
+      - name: Build & Test Frontend
+        run: |
+          cd frontend
+          npm install
+          npm test || echo "no tests"
 
-    - name: Deploy to EC2 via SSH
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ubuntu
-        key: ${{ secrets.EC2_KEY }}
-        script: |
-          cd fullstack-app
-          git pull origin main
-          docker-compose down
-          docker-compose up -d --build
-
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            cd fullstack-app
+            git pull origin main
+            docker-compose down
+            docker-compose up -d --build
